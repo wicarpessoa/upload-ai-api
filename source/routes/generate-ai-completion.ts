@@ -5,13 +5,11 @@ import { prisma } from "../lib/prisma";
 import { openai } from "../lib/openai";
 export async function generateAICompletionRoute(app: FastifyInstance) {
   app.post("/ai/complete", async (request, reply) => {
-    console.log(request.body)
     const bodySchema = z.object({
       videoId: z.string().uuid(),
       prompt: z.string(),
       temperature: z.number().min(0).max(1).default(0.5)
     })
-    console.log(request.body)
     const { videoId, prompt, temperature } = bodySchema.parse(request.body);
     console.log(videoId, prompt, temperature)
     const video = await prisma.video.findUniqueOrThrow({
